@@ -46,9 +46,12 @@ class Ui_MainWindow(object):
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(20, 200, 291, 61))
         self.groupBox.setObjectName("groupBox")
+
         self.backgroundSubtraction = QtWidgets.QPushButton(self.groupBox)
         self.backgroundSubtraction.setGeometry(QtCore.QRect(20, 20, 251, 31))
         self.backgroundSubtraction.setObjectName("backgroundSubtraction")
+        self.backgroundSubtraction.clicked.connect(self.BackgroundSubtractionClicked)
+        
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(20, 280, 291, 101))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -113,5 +116,6 @@ class Ui_MainWindow(object):
         else:
             self.videoTxt.setText('No video loaded')
 
-
+    def BackgroundSubtractionClicked(self):
+        self.bgSub.BackgroundSubtraction()
     
