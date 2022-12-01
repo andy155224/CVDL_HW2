@@ -9,17 +9,25 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from BackgroundSubtraction import BackgroundSubstraction
 
 class Ui_MainWindow(object):
+
+    def __init__(self):
+        self.bgSub = BackgroundSubstraction()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(331, 647)
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
         self.loadVideo = QtWidgets.QPushButton(self.centralwidget)
         self.loadVideo.setGeometry(QtCore.QRect(40, 20, 251, 31))
         self.loadVideo.setObjectName("loadVideo")
+        self.loadVideo.clicked.connect(self.LoadVideoClicked)
+
         self.loadImage = QtWidgets.QPushButton(self.centralwidget)
         self.loadImage.setGeometry(QtCore.QRect(40, 80, 251, 31))
         self.loadImage.setObjectName("loadImage")
@@ -97,12 +105,13 @@ class Ui_MainWindow(object):
         self.imageReconstruction.setText(_translate("MainWindow", "4.1 Image Reconstruction"))
         self.computeTheReconstructionError.setText(_translate("MainWindow", "4.2 Compute the reconstruction error"))
 
+    def LoadVideoClicked(self):
+        fileName = QtWidgets.QFileDialog.getOpenFileName(None, 'OpenFile', './')
+        if(fileName[0] != ''):
+            self.videoTxt.setText('Video loaded')
+            self.bgSub.LoadVideo(fileName[0])
+        else:
+            self.videoTxt.setText('No video loaded')
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+
+    
