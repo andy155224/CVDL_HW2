@@ -10,11 +10,13 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from BackgroundSubtraction import BackgroundSubstraction
+from OpticalFlow import OpticalFlow
 
 class Ui_MainWindow(object):
 
     def __init__(self):
         self.bgSub = BackgroundSubstraction()
+        self.opticalFlow = OpticalFlow()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -58,9 +60,13 @@ class Ui_MainWindow(object):
         self.preprocessing = QtWidgets.QPushButton(self.groupBox_2)
         self.preprocessing.setGeometry(QtCore.QRect(20, 20, 251, 31))
         self.preprocessing.setObjectName("preprocessing")
+        self.preprocessing.clicked.connect(self.Preprocessing)
+
         self.videoTracking = QtWidgets.QPushButton(self.groupBox_2)
         self.videoTracking.setGeometry(QtCore.QRect(20, 60, 251, 31))
         self.videoTracking.setObjectName("videoTracking")
+        self.videoTracking.clicked.connect(self.VideoTracking)
+
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(20, 400, 291, 61))
         self.groupBox_3.setObjectName("groupBox_3")
@@ -113,9 +119,17 @@ class Ui_MainWindow(object):
         if(fileName[0] != ''):
             self.videoTxt.setText('Video loaded')
             self.bgSub.LoadVideo(fileName[0])
+            self.opticalFlow.LoadVideo(fileName[0])
         else:
             self.videoTxt.setText('No video loaded')
 
     def BackgroundSubtractionClicked(self):
         self.bgSub.BackgroundSubtraction()
+
+    def Preprocessing(self):
+        self.opticalFlow.Preprocessing()
+
+    def VideoTracking(self):
+        self.opticalFlow.VideoTracking()
+
     
