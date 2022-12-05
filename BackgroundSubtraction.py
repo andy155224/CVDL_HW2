@@ -10,7 +10,6 @@ class BackgroundSubstraction():
     
     def LoadVideo(self, fileName):
         self.videoPath = fileName
-        print(self.videoPath)
 
     def BackgroundSubtraction(self):
         i = 0
