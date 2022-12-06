@@ -11,12 +11,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from BackgroundSubtraction import BackgroundSubstraction
 from OpticalFlow import OpticalFlow
+from PerspectiveTransform import PerspectiveTransform
 
 class Ui_MainWindow(object):
 
     def __init__(self):
         self.bgSub = BackgroundSubstraction()
         self.opticalFlow = OpticalFlow()
+        self.perspTrans = PerspectiveTransform()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -33,6 +35,8 @@ class Ui_MainWindow(object):
         self.loadImage = QtWidgets.QPushButton(self.centralwidget)
         self.loadImage.setGeometry(QtCore.QRect(40, 80, 251, 31))
         self.loadImage.setObjectName("loadImage")
+        self.loadImage.clicked.connect(self.LoadImageClicked)
+
         self.loadFolder = QtWidgets.QPushButton(self.centralwidget)
         self.loadFolder.setGeometry(QtCore.QRect(40, 140, 251, 31))
         self.loadFolder.setObjectName("loadFolder")
@@ -60,19 +64,22 @@ class Ui_MainWindow(object):
         self.preprocessing = QtWidgets.QPushButton(self.groupBox_2)
         self.preprocessing.setGeometry(QtCore.QRect(20, 20, 251, 31))
         self.preprocessing.setObjectName("preprocessing")
-        self.preprocessing.clicked.connect(self.Preprocessing)
+        self.preprocessing.clicked.connect(self.PreprocessingClicked)
 
         self.videoTracking = QtWidgets.QPushButton(self.groupBox_2)
         self.videoTracking.setGeometry(QtCore.QRect(20, 60, 251, 31))
         self.videoTracking.setObjectName("videoTracking")
-        self.videoTracking.clicked.connect(self.VideoTracking)
+        self.videoTracking.clicked.connect(self.VideoTrackingClicked)
 
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(20, 400, 291, 61))
         self.groupBox_3.setObjectName("groupBox_3")
+
         self.perspectiveTransform = QtWidgets.QPushButton(self.groupBox_3)
         self.perspectiveTransform.setGeometry(QtCore.QRect(20, 20, 251, 31))
         self.perspectiveTransform.setObjectName("perspectiveTransform")
+        self.perspectiveTransform.clicked.connect(self.PerspectiveTransformClicked)
+
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_4.setGeometry(QtCore.QRect(20, 480, 291, 101))
         self.groupBox_4.setObjectName("groupBox_4")
@@ -120,16 +127,28 @@ class Ui_MainWindow(object):
             self.videoTxt.setText('Video loaded')
             self.bgSub.LoadVideo(fileName[0])
             self.opticalFlow.LoadVideo(fileName[0])
+            self.perspTrans.LoadVideo(fileName[0])
         else:
             self.videoTxt.setText('No video loaded')
+
+    def LoadImageClicked(self):
+        fileName = QtWidgets.QFileDialog.getOpenFileName(None, 'OpenFile', './')
+        if(fileName[0] != ''):
+            self.imageTxt.setText('Image loaded')
+            self.perspTrans.LoadImage(fileName[0])
+        else:
+            self.imageTxt.setText('No image loaded')
 
     def BackgroundSubtractionClicked(self):
         self.bgSub.BackgroundSubtraction()
 
-    def Preprocessing(self):
+    def PreprocessingClicked(self):
         self.opticalFlow.Preprocessing()
 
-    def VideoTracking(self):
+    def VideoTrackingClicked(self):
         self.opticalFlow.VideoTracking()
+
+    def PerspectiveTransformClicked(self):
+        self.perspTrans.DetectAndExecute()
 
     
