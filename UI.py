@@ -12,6 +12,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from BackgroundSubtraction import BackgroundSubstraction
 from OpticalFlow import OpticalFlow
 from PerspectiveTransform import PerspectiveTransform
+from PCA import PCA
+
 
 class Ui_MainWindow(object):
 
@@ -19,6 +21,7 @@ class Ui_MainWindow(object):
         self.bgSub = BackgroundSubstraction()
         self.opticalFlow = OpticalFlow()
         self.perspTrans = PerspectiveTransform()
+        self.pca = PCA()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -40,6 +43,8 @@ class Ui_MainWindow(object):
         self.loadFolder = QtWidgets.QPushButton(self.centralwidget)
         self.loadFolder.setGeometry(QtCore.QRect(40, 140, 251, 31))
         self.loadFolder.setObjectName("loadFolder")
+        self.loadFolder.clicked.connect(self.LoadFolderClicked)
+
         self.videoTxt = QtWidgets.QLabel(self.centralwidget)
         self.videoTxt.setGeometry(QtCore.QRect(40, 60, 101, 16))
         self.videoTxt.setObjectName("videoTxt")
@@ -83,9 +88,12 @@ class Ui_MainWindow(object):
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_4.setGeometry(QtCore.QRect(20, 480, 291, 101))
         self.groupBox_4.setObjectName("groupBox_4")
+
         self.imageReconstruction = QtWidgets.QPushButton(self.groupBox_4)
         self.imageReconstruction.setGeometry(QtCore.QRect(20, 20, 251, 31))
         self.imageReconstruction.setObjectName("imageReconstruction")
+        self.imageReconstruction.clicked.connect(self.ImageReconstructionClicked)
+
         self.computeTheReconstructionError = QtWidgets.QPushButton(self.groupBox_4)
         self.computeTheReconstructionError.setGeometry(QtCore.QRect(20, 60, 251, 31))
         self.computeTheReconstructionError.setObjectName("computeTheReconstructionError")
@@ -131,6 +139,14 @@ class Ui_MainWindow(object):
         else:
             self.videoTxt.setText('No video loaded')
 
+    def LoadFolderClicked(self):
+        folder_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Load folder", "./")
+        if(folder_path != ''):
+            self.folderTxt.setText('Folder loaded')
+            self.pca.LoadFolder(folder_path)
+        else:
+            self.folderTxt.setText('No folder loaded')
+
     def LoadImageClicked(self):
         fileName = QtWidgets.QFileDialog.getOpenFileName(None, 'OpenFile', './')
         if(fileName[0] != ''):
@@ -150,5 +166,8 @@ class Ui_MainWindow(object):
 
     def PerspectiveTransformClicked(self):
         self.perspTrans.DetectAndExecute()
+
+    def ImageReconstructionClicked(self):
+        self.pca.ImageReconstruction()
 
     
