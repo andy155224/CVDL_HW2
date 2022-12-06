@@ -11,7 +11,7 @@ class PCA():
         self.imgPath = []
         self.orgImg = []
         self.newImg = []
-        self.err = []
+        self.errList = []
     def LoadFolder(self, path):
         self.folderPath = path
         self.imgPath = os.listdir(self.folderPath)
@@ -21,7 +21,11 @@ class PCA():
         
         for filename in self.imgPath:
             img = cv2.imread(self.folderPath + '/' + filename)
+
+            imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
             self.orgImg.append(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
             b, g, r = cv2.split(img)
 
             pca = decom.PCA(n_components= 5)
@@ -35,6 +39,15 @@ class PCA():
             rNew = np.clip(rNew, a_min = 0, a_max = 255)
 
             self.newImg.append(cv2.cvtColor((cv2.merge([bNew, gNew, rNew])).astype(np.uint8), cv2.COLOR_BGR2RGB))
+
+            newImgGray = (cv2.merge([bNew, gNew, rNew])).astype(np.uint8)
+            newImgGray = cv2.cvtColor(newImgGray, cv2.COLOR_BGR2GRAY)
+
+            imgGray = cv2.normalize(imgGray, None, 0, 255, cv2.NORM_MINMAX)
+            newImgGray = cv2.normalize(newImgGray, None, 0, 255, cv2.NORM_MINMAX)
+
+            err = np.linalg.norm((imgGray-newImgGray),None)
+            self.errList.append(err)
 
         fig = plt.figure(figsize=(15, 4))
 
@@ -63,6 +76,11 @@ class PCA():
 
         plt.tight_layout(pad=1)
         plt.show()
+
+    def ComputeTheReconstructionError(self):
+        print(self.errList)
+
+
         
 
 

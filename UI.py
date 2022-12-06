@@ -97,6 +97,8 @@ class Ui_MainWindow(object):
         self.computeTheReconstructionError = QtWidgets.QPushButton(self.groupBox_4)
         self.computeTheReconstructionError.setGeometry(QtCore.QRect(20, 60, 251, 31))
         self.computeTheReconstructionError.setObjectName("computeTheReconstructionError")
+        self.computeTheReconstructionError.clicked.connect(self.ComputeTheReconstructionErrorClicked)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 331, 21))
@@ -169,5 +171,8 @@ class Ui_MainWindow(object):
 
     def ImageReconstructionClicked(self):
         self.pca.ImageReconstruction()
+    
+    def ComputeTheReconstructionErrorClicked(self):
+        self.pca.ComputeTheReconstructionError()
 
     
